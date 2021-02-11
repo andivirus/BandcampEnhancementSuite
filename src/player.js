@@ -135,8 +135,23 @@ export default class Player {
   static volumeSliderCallback(e) {
     let volume = e.target.value;
     let audio = document.querySelector("audio");
-    audio.volume = volume;
 
-    this.log.info("volume:", volume);
+    // audio.volume = volume;
+    // approximation to Math.pow(vol, 4);
+    //let calculatedVolume = Math.exp(6.908 * volume) * (1/1000);
+    // approximation to Math.pow(vol, 5);
+
+    let calculatedVolume = Math.exp(8.059 * volume) * (3.1623 * 0.0001);
+
+    this.log.info("calculatedVolume: "+ calculatedVolume);
+
+    const muteThreshold = 0.00035;
+    if(calculatedVolume < muteThreshold) {
+      calculatedVolume = 0;
+    }
+
+    audio.volume = calculatedVolume;
+
+    this.log.info("volume:"+ audio.volume);
   }
 }
